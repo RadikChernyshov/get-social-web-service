@@ -33,6 +33,9 @@ The solution is reliable, scalable and was built to accept thousands of incoming
 
     Docker >= 19.03.5
     Docker Compose >= 1.24.1
+    GO >= 1.13
+    Redis
+    Mongo
 
 ## Installation
 
