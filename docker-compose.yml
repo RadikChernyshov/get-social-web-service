@@ -1,0 +1,75 @@
+version: "3.7"
+services:
+  web:
+    environment:
+      - GO_ENV=development
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGO_DB=social
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_USER=social
+      - MONGO_PASSWORD=social
+    restart: always
+    build:
+      dockerfile: DockerfileWeb
+      context: .
+    links:
+      - redis
+      - mongo
+    ports:
+      - 80:80
+    networks:
+      - front-tier
+      - back-tier
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://0.0.0.0:80"]
+      interval: 4s
+      timeout: 10s
+      retries: 10
+    depends_on:
+      - redis
+      - mongo
+  worker:
+    environment:
+      - GO_ENV=development
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGO_DB=social
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_USER=social
+      - MONGO_PASSWORD=social
+      - CONSUMERS_COUNT=2
+    restart: always
+    build:
+      dockerfile: DockerfileWorker
+      context: .
+    links:
+      - redis
+      - mongo
+    networks:
+      - back-tier
+    depends_on:
+      - redis
+      - mongo
+  redis:
+    image: redis:4.0.11-alpine
+    ports:
+      - 6379:6379
+    networks:
+      - back-tier
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: social
+      MONGO_INITDB_ROOT_PASSWORD: social
+      MONGO_INITDB_DATABASE: social
+    networks:
+      - back-tier
+networks:
+  front-tier:
+  back-tier:
