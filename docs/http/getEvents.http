@@ -1,0 +1,35 @@
+### Get the list of all events
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events
+Accept: application/json
+
+### Get the list of all events that sent after 1578397900 (included)
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?from=1578397900
+Accept: application/json
+
+### Get the list of all events that sent before 1578397900 (included)
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?to=1578397900
+Accept: application/json
+
+### Get the list of all events that sent between 1578397900 and 1579397900 (included) and has type session_start
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?type=session_start&from=1579397900&to=1578397900
+Accept: application/json
+
+### Get the list of all events that sent in previous 24 hours
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?interval=24
+Accept: application/json
+
+### Get the list of 2 events
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?limit=2
+Accept: application/json
+
+### Get the list of 2 events with offset 2
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?limit=2&offset=2
+Accept: application/json
+
+### Get the list of 2 events with offset 1 and session_start type
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?type=session_start&limit=2&offset=1
+Accept: application/json
+
+### Get the list of 2 events with offset 4 that was sent in last 4 hours
+GET http://{{host}}:{{port}}/api/v{{apiVersion}}/events?interval=4&limit=2&offset=4
+Accept: application/json

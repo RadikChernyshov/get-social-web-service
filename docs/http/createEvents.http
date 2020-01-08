@@ -1,0 +1,55 @@
+### Create a new session_start event
+POST http://{{host}}:{{port}}/api/v{{apiVersion}}/events
+Content-Type: application/json
+
+{
+	"event_type": "session_start",
+	"ts": 1578396900,
+	"params": {
+		"param1": "string",
+		"param2": 100,
+		"param3": true
+	}
+}
+
+### Create a new session_end event
+POST http://{{host}}:{{port}}/api/v{{apiVersion}}/events
+Content-Type: application/json
+
+{
+	"event_type": "session_end",
+	"ts": 1578397100,
+	"params": {
+		"param1": "string",
+		"param2": 100,
+		"param3": true
+	}
+}
+
+### Create a new link_clicked event
+POST http://{{host}}:{{port}}/api/v{{apiVersion}}/events
+Content-Type: application/json
+
+{
+	"event_type": "link_clicked",
+	"ts": 1578397600,
+	"params": {
+		"param1": "string",
+		"param2": 100,
+		"param3": true
+	}
+}
+
+### Create a new link_clicked event
+POST http://{{host}}:{{port}}/api/v{{apiVersion}}/events
+Content-Type: application/json
+
+{
+	"event_type": "link_clicked",
+	"ts": 1578397901,
+	"params": {
+		"param1": "string",
+		"param2": 100,
+		"param3": true
+	}
+}

@@ -1,0 +1,3 @@
+### Request to check is the webserver is available
+GET http://{{host}}:{{port}}
+Accept: application/json
