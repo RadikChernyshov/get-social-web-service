@@ -53,3 +53,49 @@ Content-Type: application/json
 		"param3": true
 	}
 }
+
+###
+
+### Create a new session_start with invalid payload (type missed)
+POST http://{{host}}:{{port}}/api/v{{apiVersion}}/events
+Content-Type: application/json
+
+{
+	"ts": 1578396900,
+	"params": {
+		"param1": "string",
+		"param2": 100,
+		"param3": true
+	}
+}
+
+
+### Create a new session_start with invalid payload (ts missed)
+POST http://{{host}}:{{port}}/api/v{{apiVersion}}/events
+Content-Type: application/json
+
+{
+	"event_type": "link_clicked",
+	"params": {
+		"param1": "string",
+		"param2": 100,
+		"param3": true
+	}
+}
+
+###
+
+### Resource not found
+POST http://{{host}}:{{port}}/api/v{{apiVersion}}/event
+Content-Type: application/json
+
+{
+	"event_type": "link_clicked",
+	"params": {
+		"param1": "string",
+		"param2": 100,
+		"param3": true
+	}
+}
+
+###

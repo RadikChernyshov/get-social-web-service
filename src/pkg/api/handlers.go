@@ -45,6 +45,12 @@ type NotFoundResponse struct {
 	Timestamp int64 `json:"timestamp"`
 }
 
+// Representation structure for the HTTP response when the requested payload is invalid
+type ErrorResponse struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
 // Standardize the way how the HTTP response should be sent to the API client.
 // Logs the requested url to stdout in development mode.
 func responseJson(ctx *fasthttp.RequestCtx, responseStatusCode int, responseBody interface{}) {
@@ -62,8 +68,9 @@ func responseJson(ctx *fasthttp.RequestCtx, responseStatusCode int, responseBody
 
 // Functional handler for the requests that was to routed incorrectly
 func NotFound(ctx *fasthttp.RequestCtx) {
-	responseBody := NotFoundResponse{
-		Timestamp: time.Now().Unix(),
+	responseBody := ErrorResponse{
+		Code:    fasthttp.StatusNotFound,
+		Message: "requested resource not found",
 	}
 	responseJson(ctx, fasthttp.StatusNotFound, responseBody)
 }
@@ -86,8 +93,18 @@ func EventsCreate(ctx *fasthttp.RequestCtx) {
 		responseJson(ctx, fasthttp.StatusUnprocessableEntity, err)
 		return
 	}
+	if eventPayload.EventType == "" {
+		responseJson(ctx, fasthttp.StatusUnprocessableEntity, ErrorResponse{fasthttp.StatusUnprocessableEntity, "event has to have a type"})
+		return
+	}
+	if eventPayload.Timestamp == 0 {
+		responseJson(ctx, fasthttp.StatusUnprocessableEntity, ErrorResponse{fasthttp.StatusUnprocessableEntity, "event has to have a timestamp"})
+		return
+	}
 	if published := queue.Publish(eventPayload); !published {
 		logger.Warning("event has not been sent to queue")
+		responseJson(ctx, fasthttp.StatusUnprocessableEntity, ErrorResponse{fasthttp.StatusUnprocessableEntity, "event has not been processed"})
+		return
 	}
 	responseBody := CreateEventResponse{
 		Status: fasthttp.StatusCreated,
